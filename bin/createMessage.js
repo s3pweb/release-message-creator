@@ -2,8 +2,11 @@
 'use strict'
 
 const fs = require('fs')
+const util = require('util')
 
-const fileContent = fs.readFileSync('./CHANGELOG.md', 'utf8').toString()
+const args = process.argv.slice(2);
+
+const fileContent = fs.readFileSync(args[0], 'utf8').toString()
 
 const regex = new RegExp(/## \[.+?## \[/, 's')
 
@@ -22,6 +25,7 @@ const changes = res[0]
   // Reduce double line returns to a single one
   .replace(/\n\n/g, '\n')
 
-const title = `Livraison de l'API en PRODUCTION, version ${versions[0][1]} (ancienne ${versions[1][1]}) :\n\n`
+// Format title by adding the current version and the old one
+const title = util.format(args[1], versions[0][1], versions[1][1])
 
-console.log(title + changes)
+console.log(title + '\n\n' + changes)
