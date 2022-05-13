@@ -2,7 +2,9 @@
   "name": "@s3pweb/release-message-creator",
   "version": "0.0.0",
   "description": "Create a formatted release message from a standard-release changelog",
-  "main": "index.js",
+  "bin": {
+    "create-release-message": "./bin/createMessage.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,5 +13,8 @@
     "url": "https://github.com//s3pweb/release-message-creator.git"
   },
   "author": "s3pweb",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "bin"
+  ]
 }
