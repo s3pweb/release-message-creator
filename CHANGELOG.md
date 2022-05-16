@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **discord:** send extracted content to the discord API ([d31f03c](https://github.com//s3pweb/release-message-creator/commit/d31f03cc2d17273e2b1dd1ffe7522824d4058a9b))
 
-### 0.0.1 (2022-05-13)
+### [0.0.1]() (2022-05-13)
 
 
 ### Features
