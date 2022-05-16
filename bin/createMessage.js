@@ -6,7 +6,7 @@ const util = require('util')
 const https = require('https')
 const { argv } = require('yargs')
   .scriptName('create-release-message')
-  .usage('Usage: $0 -f <path to changelog> -m <message>')
+  .usage('Usage: $0 -f <PathToChangelog> -m <message>')
   .example(
     '$0 -f ./CHANGELOG.md -m "Release %s replacing %s" -w /api/webhooks/123456789/abcdefghijklmnopqrstuvwxyz',
     'Create the release message for the latest version in CHANGELOG.md and send it to the given discord webhook or the console.'
@@ -73,7 +73,6 @@ if (webhook) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Content-Length': data.length + 1
     }
   }
 
