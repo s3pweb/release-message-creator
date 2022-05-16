@@ -29,5 +29,4 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
           cache: 'npm'
-      - run: npm install -g @s3pweb/release-message-creator
-      - run: create-release-message -m "Publication de @s3pweb/release-message-creator, version %s (ancienne %s) :" -w ${DISCORD_WEBHOOK_LIBS}
+      - run: node ./bin/createMessage.js -m "Publication de @s3pweb/release-message-creator, version %s (ancienne %s) :" -w ${{secrets.DISCORD_WEBHOOK_LIBS}}
