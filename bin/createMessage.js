@@ -9,12 +9,12 @@ const args = process.argv.slice(2)
 
 const fileContent = fs.readFileSync(args[0], 'utf8').toString()
 
-const regex = new RegExp(/## \[.+?## \[/, 's')
+const regex = /## \[.+?## \[/s
 
 const reducedContent = fileContent.match(regex)
 
 // Extract all the versions from the changelog
-const versions = [...fileContent.matchAll(new RegExp(/## \[(.*)]/, 'gm'))]
+const versions = [...fileContent.matchAll(/## \[(.*)]/gm)]
 
 const changes = reducedContent[0]
   // Remove the last line
@@ -42,8 +42,8 @@ if (args[2]) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Content-Length': data.length + 1,
-    },
+      'Content-Length': data.length + 1
+    }
   }
 
   // Call the discord API with the data

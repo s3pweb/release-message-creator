@@ -1,4 +1,5 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@s3pweb/release-message-creator)](https://www.npmjs.com/package/@s3pweb/release-message-creator)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 # Release message creator
 

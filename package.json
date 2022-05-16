@@ -6,7 +6,8 @@
     "create-release-message": "./bin/createMessage.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "standard --fix",
+    "test": "standard",
     "release": "standard-version"
   },
   "repository": {
@@ -19,6 +20,7 @@
     "bin"
   ],
   "devDependencies": {
+    "standard": "17.0.0",
     "standard-version": "9.3.2"
   }
 }
