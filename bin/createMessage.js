@@ -4,10 +4,39 @@
 const fs = require('fs')
 const util = require('util')
 const https = require('https')
+const { argv } = require('yargs')
+  .scriptName('create-release-message')
+  .usage('Usage: $0 -f <path to changelog> -m <message>')
+  .example(
+    '$0 -f ./CHANGELOG.md -m "Release %s replacing %s" -w /api/webhooks/123456789/abcdefghijklmnopqrstuvwxyz',
+    'Create the release message for the latest version in CHANGELOG.md and send it to the given discord webhook or the console.'
+  )
+  .option('f', {
+    alias: 'file',
+    describe: 'The changelog to parse.',
+    nargs: 1,
+    type: 'string',
+    default: './CHANGELOG.md'
+  })
+  .option('m', {
+    alias: 'message',
+    describe: 'A message template with 2 placeholders (`%s`) for the new version and the old version (in that order). To display before the changelog.',
+    nargs: 1,
+    type: 'string',
+    default: 'Release API X, version %s (replacing %s):'
+  })
+  .option('w', {
+    alias: 'webhook',
+    describe: 'The webhook to send the message to, only the path.',
+    nargs: 1,
+    type: 'string',
+  })
 
-const args = process.argv.slice(2)
+const { file, message, webhook } = argv
 
-const fileContent = fs.readFileSync(args[0], 'utf8').toString()
+console.log(argv)
+
+const fileContent = fs.readFileSync(file, 'utf8').toString()
 
 const regex = /## \[.+?## \[/s
 
@@ -27,18 +56,20 @@ const changes = reducedContent[0]
   .replace(/\n\n/g, '\n')
 
 // Format title by adding the current version and the old one
-const title = util.format(args[1], versions[0][1], versions[1][1])
+const title = util.format(message, versions[0][1], versions[1][1])
 
 // Call the webhook only if we have it in the args
-if (args[2]) {
+if (webhook) {
   const data = JSON.stringify({
     content: title + '\n\n' + changes
   })
 
+  console.log(data)
+
   const options = {
     hostname: 'discord.com',
     port: 443,
-    path: args[2],
+    path: webhook,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
