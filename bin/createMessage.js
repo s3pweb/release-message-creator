@@ -34,8 +34,6 @@ const { argv } = require('yargs')
 
 const { file, message, webhook } = argv
 
-console.log(argv)
-
 const fileContent = fs.readFileSync(file, 'utf8').toString()
 
 const regex = /## \[.+?## \[/s
@@ -63,8 +61,6 @@ if (webhook) {
   const data = JSON.stringify({
     content: title + '\n\n' + changes
   })
-
-  console.log(data)
 
   const options = {
     hostname: 'discord.com',
