@@ -32,40 +32,56 @@ const { argv } = require('yargs')
     type: 'string',
   })
 
-const { file, message, webhook } = argv
+function run () {
+  const { file, message, webhook } = argv
 
-const fileContent = fs.readFileSync(file, 'utf8').toString()
+  const { title, changes } = extractTitleAndChanges(file, message)
+  const messageToSend = `${title}\n\n${changes}`
 
-const regex = /## \[.+?## \[/s
+  if (webhook) {
+    // Call the webhook only if we have it in the args
+    callDiscordWebhook(webhook, messageToSend)
+  } else {
+    // Print the title and the changes, if no webhook is provided
+    console.log(messageToSend)
+  }
+}
 
-const reducedContent = fileContent.match(regex)
+function extractTitleAndChanges (filePath, titleMessage) {
+  const fileContent = fs.readFileSync(filePath, 'utf8').toString()
 
-// Extract all the versions from the changelog
-const versions = [...fileContent.matchAll(/## \[(.*)]/gm)]
+  // Get the content between the first and the second releases
+  const regex = /## \[.+?## \[/s
+  const reducedContent = fileContent.match(regex)
 
-const changes = reducedContent[0]
-  // Remove the last line
-  .replace(/\n.*$/, '').trim()
-  // Remove the commits links
-  .replace(/\(\[.*/g, '')
-  // Remove the bitbucket version link
-  .replace(/\(.*\) /, ' ')
-  // Reduce double line returns to a single one
-  .replace(/\n\n/g, '\n')
+  // Extract all the versions from the changelog
+  const versions = [...fileContent.matchAll(/## \[(.*)]/gm)]
 
-// Format title by adding the current version and the old one
-const title = util.format(message, versions[0][1], versions[1][1])
+  const changes = reducedContent[0]
+    // Remove the last line
+    .replace(/\n.*$/, '').trim()
+    // Remove the commits links
+    .replace(/\(\[.*/g, '')
+    // Remove the bitbucket version link
+    .replace(/\(.*\) /, ' ')
+    // Reduce double line returns to a single one
+    .replace(/\n\n/g, '\n')
 
-// Call the webhook only if we have it in the args
-if (webhook) {
+  // Format title by adding the current version and the old one
+  const title = util.format(titleMessage, versions[0][1], versions[1][1])
+
+  return { title, changes }
+}
+
+function callDiscordWebhook (url, content) {
   const data = JSON.stringify({
-    content: title + '\n\n' + changes
+    content: content
   })
 
   const options = {
     hostname: 'discord.com',
     port: 443,
-    path: webhook,
+    path: url,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -87,7 +103,6 @@ if (webhook) {
 
   req.write(data)
   req.end()
-} else {
-  // Print the title and the changes, if no webhook is provided
-  console.log(title + '\n\n' + changes)
 }
+
+run()
