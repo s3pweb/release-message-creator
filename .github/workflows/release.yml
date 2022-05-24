@@ -1,0 +1,27 @@
+name: Create new release from tag
+
+on:
+  label:
+    types:
+      - created
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+    - run: npm ci
+    - run: |
+        lastTag=`curl https://api.github.com/repos/s3pweb/release-message-creator/tags | jq -r '.[0].name'`
+        body=`node ./bin/createMessage.js -m ""`
+        curl -X POST -H "Authorization: token ${{secrets.TOKEN}}" \
+          https://api.github.com/repos/s3pweb/release-message-creator/releases \
+          -d '{"tag_name":"${lastTag}","name":"Version ${lastTag#v}","body":"${body}", draft:true}'
