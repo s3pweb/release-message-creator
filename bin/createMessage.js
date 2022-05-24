@@ -20,7 +20,7 @@ const { argv } = require('yargs')
   })
   .option('m', {
     alias: 'message',
-    describe: 'A message template with 2 placeholders (`%s`) for the new version and the old version (in that order). To display before the changelog.',
+    describe: 'A message template with up to 2 placeholders (`%s`) for the new version and the old version (in that order). To display before the changelog.',
     nargs: 1,
     type: 'string',
     default: 'Release API X, version %s (replacing %s):'
@@ -67,8 +67,17 @@ function extractTitleAndChanges (filePath, titleMessage) {
     // Reduce double line returns to a single one
     .replace(/\n\n/g, '\n')
 
-  // Format title by adding the current version and the old one
-  const title = util.format(titleMessage, versions[0][1], versions[1][1])
+  // Count the number of %s in the title message
+  const count = (titleMessage.match(/%s/g) || []).length
+
+  let title = titleMessage
+  if (count === 1) {
+    // Format title by adding only the current version
+    title = util.format(titleMessage, versions[0][1])
+  } else if (count > 1) {
+    // Format title by adding the current version and the old one
+    title = util.format(titleMessage, versions[0][1], versions[1][1])
+  }
 
   return { title, changes }
 }
