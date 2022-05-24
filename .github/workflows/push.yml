@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Spam test webhook
 
 on:
   push:
@@ -8,15 +8,13 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Spam everybody
-      uses: actions/setup-node@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: 16
         cache: 'npm'
     - run: npm ci
-    - run: node ./bin/createMessage.js -m "Publication de @s3pweb/release-message-creator, version %s (ancienne %s) :" -w ${{secrets.DISCORD_WEBHOOK_SPAM}}
+    - run: node ./bin/createMessage.js -m "Spam test %s" -w ${{secrets.DISCORD_WEBHOOK_SPAM}}
