@@ -2,6 +2,11 @@
   "name": "@s3pweb/release-message-creator",
   "version": "0.0.4",
   "description": "Create a formatted release message from a standard-release changelog",
+  "keywords": [
+    "changelog",
+    "webhook",
+    "release"
+  ],
   "bin": {
     "create-release-message": "./bin/createMessage.js"
   },
