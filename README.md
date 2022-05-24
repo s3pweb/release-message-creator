@@ -13,11 +13,11 @@ npm install -g @s3pweb/release-message-creator
 
 ## Usage
 
-The `create-release-message` takes 3 optionals arguments:
+The `create-release-message` command takes 3 optionals arguments:
 
 - `-f` The path to the changelog file.
 - `-m` A message template with up to 2 placeholders (`%s`) for the new version and the old version (in that order).
-- `-w` The path part of a discord webhook (e.g. `/api/webhooks/123456789/abcdefghijklmnopqrstuvwxyz`).
+- `-w` The full webhook url to send the message to. (e.g. `https://discord.com/api/webhooks/123456789/abcdefghijklmnopqrstuvwxyz`).
 
 ```shell
 create-release-message -f <changelog location> -m <message> -w <webhook discord>

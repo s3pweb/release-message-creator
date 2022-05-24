@@ -3,7 +3,7 @@
 
 const fs = require('fs')
 const util = require('util')
-const https = require('https')
+const axios = require('axios').default
 const { argv } = require('yargs')
   .scriptName('create-release-message')
   .usage('Usage: $0 -f <PathToChangelog> -m <message>')
@@ -27,7 +27,7 @@ const { argv } = require('yargs')
   })
   .option('w', {
     alias: 'webhook',
-    describe: 'The webhook to send the message to, only the path.',
+    describe: 'The full webhook url to send the message to.',
     nargs: 1,
     type: 'string'
   })
@@ -83,35 +83,14 @@ function extractTitleAndChanges (filePath, titleMessage) {
 }
 
 function callDiscordWebhook (url, content) {
-  const data = JSON.stringify({
-    content
-  })
-
-  const options = {
-    hostname: 'discord.com',
-    port: 443,
-    path: url,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-
-  // Call the discord API with the data
-  const req = https.request(options, res => {
-    console.log(`statusCode: ${res.statusCode}`)
-
-    res.on('data', d => {
-      process.stdout.write(d)
+  axios.post(url, { content: content })
+    .then((response) => {
+      console.log(`Successfully sent the message to the webhook: HTTP ${response.status} - ${response.statusText}.`)
     })
-  })
-
-  req.on('error', error => {
-    console.error(error)
-  })
-
-  req.write(data)
-  req.end()
+    .catch(function (error) {
+      // handle error
+      console.error(`Error while sending the message to the webhook: HTTP ${error.response.status} - ${error.response.statusText}`)
+    })
 }
 
 run()
