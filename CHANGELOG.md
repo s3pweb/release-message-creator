@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/s3pweb/release-message-creator/compare/v0.0.3...v0.0.4) (2022-05-24)
+
+
+### Features
+
+* **title:** count the number of %s in the message before formatting ([317e9f7](https://github.com/s3pweb/release-message-creator/commit/317e9f72ed6d9c321d61ed534425b009c734684c))
+
 ### [0.0.3](https://github.com/s3pweb/release-message-creator/compare/v0.0.2...v0.0.3) (2022-05-16)
 
 
