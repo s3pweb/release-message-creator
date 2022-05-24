@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/s3pweb/release-message-creator/compare/v0.0.4...v0.0.5) (2022-05-24)
+
+
+### Features
+
+* **actions:** add an automatic release action ([5589f88](https://github.com/s3pweb/release-message-creator/commit/5589f88366c2690c1648fb8d82b70affac1c1904))
+* **webhook:** add axios to call the webhook ([830adb9](https://github.com/s3pweb/release-message-creator/commit/830adb9afb61dbd33823f31e8606525c9d59999f))
+
 ### [0.0.4](https://github.com/s3pweb/release-message-creator/compare/v0.0.3...v0.0.4) (2022-05-24)
 
 
