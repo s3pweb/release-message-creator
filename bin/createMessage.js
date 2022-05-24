@@ -29,7 +29,7 @@ const { argv } = require('yargs')
     alias: 'webhook',
     describe: 'The webhook to send the message to, only the path.',
     nargs: 1,
-    type: 'string',
+    type: 'string'
   })
 
 function run () {
@@ -84,7 +84,7 @@ function extractTitleAndChanges (filePath, titleMessage) {
 
 function callDiscordWebhook (url, content) {
   const data = JSON.stringify({
-    content: content
+    content
   })
 
   const options = {
@@ -93,7 +93,7 @@ function callDiscordWebhook (url, content) {
     path: url,
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
   }
 
