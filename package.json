@@ -8,7 +8,8 @@
     "release"
   ],
   "bin": {
-    "create-release-message": "./bin/createMessage.js"
+    "create-release-message": "./bin/createMessage.js",
+    "create-github-message": "bin/createGitHubMessage.js"
   },
   "scripts": {
     "lint": "standard --fix",
