@@ -20,8 +20,8 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: |
-        lastTag=`curl https://api.github.com/repos/s3pweb/release-message-creator/tags | jq -r '.[0].name'`
-        body=`node ./bin/createMessage.js -m ""`
+        LAST_TAG=`curl https://api.github.com/repos/s3pweb/release-message-creator/tags | jq -r '.[0].name'`
+        BODY=`node ./bin/createGithubMessage.js`
         curl -X POST -H "Authorization: token ${{secrets.TOKEN}}" \
           https://api.github.com/repos/s3pweb/release-message-creator/releases \
-          -d '{"tag_name":"${lastTag}","name":"Version ${lastTag#v}","body":"${body}", draft:true}'
+          -d '{"tag_name":"'"${LAST_TAG}"'","name":"'"Version ${LAST_TAG#v}"'","body":'"${BODY}"', draft:true}'
