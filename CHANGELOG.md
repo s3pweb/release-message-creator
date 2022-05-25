@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/s3pweb/release-message-creator/compare/v0.0.5...v0.1.0) (2022-05-25)
+
+
+### Features
+
+* **bin:** add a new bin to create a release message compatible with GitHub API ([dfc734d](https://github.com/s3pweb/release-message-creator/commit/dfc734d9b3798356acb34b5ffe0e57a0c6622d4f))
+
 ### [0.0.5](https://github.com/s3pweb/release-message-creator/compare/v0.0.4...v0.0.5) (2022-05-24)
 
 
