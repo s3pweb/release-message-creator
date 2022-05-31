@@ -52,10 +52,15 @@ function extractTitleAndChanges (filePath, titleMessage) {
 
   // Get the content between the first and the second releases
   const regex = /## \[.+?## \[/s
-  const reducedContent = fileContent.match(regex)
+  let reducedContent = fileContent.match(regex)
 
-  // Extract all the versions from the changelog
-  const versions = [...fileContent.matchAll(/## \[(.*)]/gm)]
+  if (!reducedContent) {
+    reducedContent = fileContent.match(/## \[.+/s)
+  }
+
+  if (!reducedContent) {
+    throw new Error('Could not find a release in the changelog.')
+  }
 
   const changes = reducedContent[0]
     // Remove the last line
@@ -67,6 +72,8 @@ function extractTitleAndChanges (filePath, titleMessage) {
     // Reduce double line returns to a single one
     .replace(/\n\n/g, '\n')
 
+  // Extract all the versions from the changelog
+  const versions = [...fileContent.matchAll(/## \[(.*)]/gm)]
   // Count the number of %s in the title message
   const count = (titleMessage.match(/%s/g) || []).length
 
