@@ -1,12 +1,8 @@
 name: Create new release from tag
 
 on:
-  label:
-    types:
-      - created
   push:
-    branches:
-      - main
+    tags: [ 'v*' ]
 
 jobs:
   build:
@@ -24,4 +20,4 @@ jobs:
         BODY=`node ./bin/createGitHubMessage.js`
         curl -f -X POST -H "Authorization: token ${{secrets.TOKEN}}" \
           https://api.github.com/repos/s3pweb/release-message-creator/releases \
-          -d '{"tag_name":"'"${LAST_TAG}"'","name":"'"Version ${LAST_TAG#v}"'","body":'"${BODY}"', draft:true}'
+          -d '{"tag_name":"'"${LAST_TAG}"'","name":"Version '"${LAST_TAG#v}"'","body":'"${BODY}"', "draft":false}'
