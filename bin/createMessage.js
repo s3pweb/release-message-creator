@@ -54,8 +54,9 @@ function extractTitleAndChanges (filePath, titleMessage) {
   const regex = /## \[.+?## \[/s
   let reducedContent = fileContent.match(regex)
 
+  // Try another regex if the first one doesn't work (for the first release)
   if (!reducedContent) {
-    reducedContent = fileContent.match(/## \[.+/s)
+    reducedContent = fileContent.match(/## .+/s)
   }
 
   if (!reducedContent) {
