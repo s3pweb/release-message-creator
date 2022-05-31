@@ -74,7 +74,13 @@ function extractTitleAndChanges (filePath, titleMessage) {
     .replace(/\n\n/g, '\n')
 
   // Extract all the versions from the changelog
-  const versions = [...fileContent.matchAll(/## \[(.*)]/gm)]
+  let versions = [...fileContent.matchAll(/## \[(.*)]/gm)]
+
+  // Try another regex if the first one doesn't work (for the first release)
+  if(versions.length === 0) {
+    versions = [...fileContent.matchAll(/## (.*) \(/gm)]
+  }
+
   // Count the number of %s in the title message
   const count = (titleMessage.match(/%s/g) || []).length
 
