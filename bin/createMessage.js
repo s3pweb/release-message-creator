@@ -82,8 +82,13 @@ function extractTitleAndChanges (filePath, titleMessage) {
     // Format title by adding only the current version
     title = util.format(titleMessage, versions[0][1])
   } else if (count > 1) {
+    let previousVersion = '-'
+    // Check if we have a previous version
+    if (versions[1] && versions[1][1]) {
+      previousVersion = versions[1][1]
+    }
     // Format title by adding the current version and the old one
-    title = util.format(titleMessage, versions[0][1], versions[1][1])
+    title = util.format(titleMessage, versions[0][1], previousVersion)
   }
 
   return { title, changes }
