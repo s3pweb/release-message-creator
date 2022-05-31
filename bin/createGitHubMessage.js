@@ -30,7 +30,15 @@ function extractTitleAndChanges (filePath) {
 
   // Get the content between the first and the second releases
   const regex = /## \[.+?## \[/s
-  const reducedContent = fileContent.match(regex)
+  let reducedContent = fileContent.match(regex)
+
+  if (!reducedContent) {
+    reducedContent = fileContent.match(/## \[.+/s)
+  }
+
+  if (!reducedContent) {
+    throw new Error('Could not find a release in the changelog.')
+  }
 
   return reducedContent[0]
     // Remove the last line
