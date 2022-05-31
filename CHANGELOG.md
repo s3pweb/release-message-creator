@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/s3pweb/release-message-creator/compare/v0.1.1...v0.1.2) (2022-05-31)
+
+
+### Bug Fixes
+
+* **changes:** fix the regex to correctly match for the first release ([8c6429f](https://github.com/s3pweb/release-message-creator/commit/8c6429fe6e35f57f25aa7f9863af68350383da1a))
+* **versions:** fix the regex to correctly match for the first release ([0da21d8](https://github.com/s3pweb/release-message-creator/commit/0da21d8d1e3180b928fc26517887ca6f1c132b1e))
+
 ### [0.1.1](https://github.com/s3pweb/release-message-creator/compare/v0.1.0...v0.1.1) (2022-05-31)
 
 
