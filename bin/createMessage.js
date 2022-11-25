@@ -116,8 +116,11 @@ function callDiscordWebhook (url, content) {
 
     // If the last \n is not the start of the slice
     if (lastLineReturn > 0) {
-      // Re-cut the message
-      slicedContent = slicedContent.slice(0, lastLineReturn)
+      // If we are at the last loop, avoid re-cutting (and loosing the last line)
+      if (index + maxLength < content.length) {
+        // Re-cut the message
+        slicedContent = slicedContent.slice(0, lastLineReturn)
+      }
       // Add a delay after the first message to avoid HTTP 429
       const timeout = firstMessage ? 0 : 1000
       // Send message
