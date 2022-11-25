@@ -77,7 +77,7 @@ function extractTitleAndChanges (filePath, titleMessage) {
   let versions = [...fileContent.matchAll(/## \[(.*)]/gm)]
 
   // Try another regex if the first one doesn't work (for the first release)
-  if(versions.length === 0) {
+  if (versions.length === 0) {
     versions = [...fileContent.matchAll(/## (.*) \(/gm)]
   }
 
@@ -102,14 +102,39 @@ function extractTitleAndChanges (filePath, titleMessage) {
 }
 
 function callDiscordWebhook (url, content) {
-  axios.post(url, { content: content })
-    .then((response) => {
-      console.log(`Successfully sent the message to the webhook: HTTP ${response.status} - ${response.statusText}.`)
-    })
-    .catch(function (error) {
-      // handle error
-      console.error(`Error while sending the message to the webhook: HTTP ${error.response.status} - ${error.response.statusText}`)
-    })
+  let index = 0
+  // Discord max length is 2000
+  let maxLength = 1990
+  let lastLineReturn = 1
+  let firstMessage = true
+
+  while (lastLineReturn > 0) {
+    // Reduce message size to be under Discord's maximum
+    let slicedContent = content.slice(index, index + maxLength)
+    // Find the last \n to cleanly cut the message after it
+    lastLineReturn = slicedContent.lastIndexOf('\n')
+
+    // If the last \n is not the start of the slice
+    if (lastLineReturn > 0) {
+      // Re-cut the message
+      slicedContent = slicedContent.slice(0, lastLineReturn)
+      // Add a delay after the first message to avoid HTTP 429
+      const timeout = firstMessage ? 0 : 1000
+      // Send message
+      setTimeout(() => {
+        axios.post(url, { content: slicedContent })
+          .then((response) => {
+            console.log(`Successfully sent the message to the webhook: HTTP ${response.status} - ${response.statusText}.`)
+          })
+          .catch((error) => {
+            // handle error
+            console.error(`Error while sending the message to the webhook: HTTP ${error.response.status} - ${error.response.statusText}`)
+          })
+      }, timeout)
+      firstMessage = false
+    }
+    index += lastLineReturn
+  }
 }
 
 run()
