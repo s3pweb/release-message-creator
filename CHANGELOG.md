@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/s3pweb/release-message-creator/compare/v1.0.0...v1.0.1) (2022-11-25)
+
+
+### Bug Fixes
+
+* **discord:** avoid losing the last line of the last message ([6fdc799](https://github.com/s3pweb/release-message-creator/commit/6fdc799c0c15e6d23dff2073d4368c770846d543))
+
 ## [1.0.0](https://github.com/s3pweb/release-message-creator/compare/v0.1.2...v1.0.0) (2022-11-25)
 
 
