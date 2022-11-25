@@ -104,7 +104,7 @@ function extractTitleAndChanges (filePath, titleMessage) {
 function callDiscordWebhook (url, content) {
   let index = 0
   // Discord max length is 2000
-  let maxLength = 1990
+  const maxLength = 1990
   let lastLineReturn = 1
   let firstMessage = true
 
