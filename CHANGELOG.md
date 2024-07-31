@@ -1,6 +1,8 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [1.0.2](https://github.com/s3pweb/release-message-creator/compare/v1.0.1...v1.0.2) (2024-07-31)
 
 ### [1.0.1](https://github.com/s3pweb/release-message-creator/compare/v1.0.0...v1.0.1) (2022-11-25)
 
