@@ -54,7 +54,7 @@ create-github-message -f <changelog location>
 ```
 
 ```shell
-create-github-message -f ./CHANGELOG.md -m
+create-github-message -f ./CHANGELOG.md
 ```
 
 Result:
