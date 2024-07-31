@@ -116,7 +116,7 @@ function callDiscordWebhook (url, content) {
 
     // If the last \n is not the start of the slice
     if (lastLineReturn > 0) {
-      // If we are at the last loop, avoid re-cutting (and loosing the last line)
+      // If we are at the last loop, avoid re-cutting (and losing the last line)
       if (index + maxLength < content.length) {
         // Re-cut the message
         slicedContent = slicedContent.slice(0, lastLineReturn)
