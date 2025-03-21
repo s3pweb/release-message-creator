@@ -1,6 +1,6 @@
 {
   "name": "@s3pweb/release-message-creator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Create a formatted release message from a standard-release changelog",
   "keywords": [
     "changelog",
