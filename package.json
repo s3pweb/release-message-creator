@@ -26,11 +26,11 @@
     "bin/**/*"
   ],
   "devDependencies": {
-    "commit-and-tag-version": "12.4.1",
-    "standard": "17.1.0"
+    "commit-and-tag-version": "12.5.0",
+    "standard": "17.1.2"
   },
   "dependencies": {
-    "axios": "1.7.2",
+    "axios": "1.8.4",
     "yargs": "17.7.2"
   }
 }
