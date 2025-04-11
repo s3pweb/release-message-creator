@@ -31,12 +31,23 @@ const { argv } = require('yargs')
     nargs: 1,
     type: 'string'
   })
+  .option('u', {
+    alias: 'user',
+    describe: 'The user that created the release.',
+    nargs: 1,
+    type: 'string'
+  })
 
 function run () {
-  const { file, message, webhook } = argv
+  const { file, message, webhook, user } = argv
 
   const { title, changes } = extractTitleAndChanges(file, message)
-  const messageToSend = `${title}\n\n${changes}`
+  let messageToSend = `${title}\n\n${changes}`
+
+  if (user) {
+    // Add the user to the message
+    messageToSend = `${messageToSend}\n\nRelease created by ${user}.`
+  }
 
   if (webhook) {
     // Call the webhook only if we have it in the args
@@ -91,7 +102,7 @@ function extractTitleAndChanges (filePath, titleMessage) {
   } else if (count > 1) {
     let previousVersion = '-'
     // Check if we have a previous version
-    if (versions[1] && versions[1][1]) {
+    if (versions?.[1]?.[1]) {
       previousVersion = versions[1][1]
     }
     // Format title by adding the current version and the old one
