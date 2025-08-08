@@ -1,53 +1,31 @@
 'use strict'
 
 const { extractTitleAndChanges, extractRawChanges } = require('../lib/parser')
-const fs = require('fs')
 
 describe('Parser', () => {
-  const changelogPath = 'test-CHANGELOG.md'
-  beforeAll(() => {
-    // Create a dummy changelog file
-    fs.writeFileSync(changelogPath, `
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [1.1.0] - 2021-08-01
-### Added
-- A new feature
-
-## [1.0.0] - 2021-07-01
-### Added
-- Initial release
-`)
-  })
-
-  afterAll(() => {
-    // Remove the dummy changelog file
-    fs.unlinkSync(changelogPath)
-  })
+  const changelogPath = 'CHANGELOG.md'
 
   describe('extractRawChanges', () => {
     it('should extract the latest release notes from the changelog', () => {
       const changes = extractRawChanges(changelogPath)
-      expect(changes).toBe('## [1.1.0] - 2021-08-01\n### Added\n- A new feature')
+      const expectedChanges = '## [1.1.0](https://github.com/s3pweb/release-message-creator/compare/v1.0.3...v1.1.0) (2025-04-11)\n\n### Features\n* add user arg to create-release-message ([c1b79da](https://github.com/s3pweb/release-message-creator/commit/c1b79da86e59bcce448c84e1111788ffcd65975b))'
+      expect(changes).toBe(expectedChanges)
     })
   })
 
   describe('extractTitleAndChanges', () => {
     it('should extract the title and changes from the changelog', () => {
       const { title, changes } = extractTitleAndChanges(changelogPath, 'Release %s')
+      const expectedChanges = '## [1.1.0] (2025-04-11)\n\n### Features\n* add user arg to create-release-message '
       expect(title).toBe('Release 1.1.0')
-      expect(changes).toBe('## [1.1.0] - 2021-08-01\n### Added\n- A new feature')
+      expect(changes).toBe(expectedChanges)
     })
 
     it('should extract the title and changes from the changelog with two versions', () => {
       const { title, changes } = extractTitleAndChanges(changelogPath, 'Release %s (was %s)')
-      expect(title).toBe('Release 1.1.0 (was 1.0.0)')
-      expect(changes).toBe('## [1.1.0] - 2021-08-01\n### Added\n- A new feature')
+      const expectedChanges = '## [1.1.0] (2025-04-11)\n\n### Features\n* add user arg to create-release-message '
+      expect(title).toBe('Release 1.1.0 (was 1.0.3)')
+      expect(changes).toBe(expectedChanges)
     })
   })
 })

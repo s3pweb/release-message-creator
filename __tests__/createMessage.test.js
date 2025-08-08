@@ -7,22 +7,10 @@ const axios = require('axios')
 jest.mock('axios')
 
 describe('createMessage', () => {
-  const changelogContent = `
-# Changelog
-
-## [1.1.0] - 2021-08-01
-### Added
-- A new feature
-`
-  const changelogPath = path.resolve(__dirname, 'test-CHANGELOG.md')
+  const changelogPath = path.resolve(__dirname, '../CHANGELOG.md')
 
   beforeEach(() => {
-    fs.writeFileSync(changelogPath, changelogContent)
     jest.clearAllMocks()
-  })
-
-  afterEach(() => {
-    fs.unlinkSync(changelogPath)
   })
 
   it('should send the release message to the webhook', async () => {
@@ -52,8 +40,10 @@ describe('createMessage', () => {
       await require('../bin/createMessage.js')
     })
 
+    const expectedContent = 'New release 1.1.0\n\n## [1.1.0] (2025-04-11)\n\n### Features\n* add user arg to create-release-message \n\nRelease created by test-user.'
+
     expect(axios.post).toHaveBeenCalledWith(webhookUrl, {
-      content: 'New release 1.1.0\n\n## [1.1.0] - 2021-08-01\n### Added\n- A new feature\n\nRelease created by test-user.'
+      content: expectedContent
     })
   })
 })
