@@ -89,6 +89,10 @@ async function callDiscordWebhook (url, content) {
       }
     }
     index += lastLineReturn
+    // Add a delay after the first message to avoid HTTP 429
+    if (index > 0) {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+    }
   }
 }
 
