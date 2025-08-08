@@ -14,7 +14,7 @@ describe('createMessage', () => {
 ### Added
 - A new feature
 `
-  const changelogPath = path.resolve(__dirname, 'CHANGELOG.md')
+  const changelogPath = path.resolve(__dirname, 'test-CHANGELOG.md')
 
   beforeEach(() => {
     fs.writeFileSync(changelogPath, changelogContent)
