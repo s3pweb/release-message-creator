@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 'use strict'
 
-const fs = require('fs')
-const util = require('util')
 const axios = require('axios').default
 const { argv } = require('yargs')
   .scriptName('create-release-message')
@@ -38,7 +36,9 @@ const { argv } = require('yargs')
     type: 'string'
   })
 
-function run () {
+const { extractTitleAndChanges } = require('../lib/parser')
+
+async function run () {
   const { file, message, webhook, user } = argv
 
   const { title, changes } = extractTitleAndChanges(file, message)
@@ -51,73 +51,18 @@ function run () {
 
   if (webhook) {
     // Call the webhook only if we have it in the args
-    callDiscordWebhook(webhook, messageToSend)
+    await callDiscordWebhook(webhook, messageToSend)
   } else {
     // Print the title and the changes, if no webhook is provided
     console.log(messageToSend)
   }
 }
 
-function extractTitleAndChanges (filePath, titleMessage) {
-  const fileContent = fs.readFileSync(filePath, 'utf8').toString()
-
-  // Get the content between the first and the second releases
-  const regex = /## \[.+?## \[/s
-  let reducedContent = fileContent.match(regex)
-
-  // Try another regex if the first one doesn't work (for the first release)
-  if (!reducedContent) {
-    reducedContent = fileContent.match(/## .+/s)
-  }
-
-  if (!reducedContent) {
-    throw new Error('Could not find a release in the changelog.')
-  }
-
-  const changes = reducedContent[0]
-    // Remove the last line
-    .replace(/\n.*$/, '').trim()
-    // Remove the commits links
-    .replace(/\(\[.*/g, '')
-    // Remove the bitbucket version link
-    .replace(/\(.*\) /, ' ')
-    // Reduce double line returns to a single one
-    .replace(/\n\n/g, '\n')
-
-  // Extract all the versions from the changelog
-  let versions = [...fileContent.matchAll(/## \[(.*)]/gm)]
-
-  // Try another regex if the first one doesn't work (for the first release)
-  if (versions.length === 0) {
-    versions = [...fileContent.matchAll(/## (.*) \(/gm)]
-  }
-
-  // Count the number of %s in the title message
-  const count = (titleMessage.match(/%s/g) || []).length
-
-  let title = titleMessage
-  if (count === 1) {
-    // Format title by adding only the current version
-    title = util.format(titleMessage, versions[0][1])
-  } else if (count > 1) {
-    let previousVersion = '-'
-    // Check if we have a previous version
-    if (versions?.[1]?.[1]) {
-      previousVersion = versions[1][1]
-    }
-    // Format title by adding the current version and the old one
-    title = util.format(titleMessage, versions[0][1], previousVersion)
-  }
-
-  return { title, changes }
-}
-
-function callDiscordWebhook (url, content) {
+async function callDiscordWebhook (url, content) {
   let index = 0
   // Discord max length is 2000
   const maxLength = 1990
   let lastLineReturn = 1
-  let firstMessage = true
 
   while (lastLineReturn > 0) {
     // Reduce message size to be under Discord's maximum
@@ -132,20 +77,16 @@ function callDiscordWebhook (url, content) {
         // Re-cut the message
         slicedContent = slicedContent.slice(0, lastLineReturn)
       }
-      // Add a delay after the first message to avoid HTTP 429
-      const timeout = firstMessage ? 0 : 1000
-      // Send message
-      setTimeout(() => {
-        axios.post(url, { content: slicedContent })
-          .then((response) => {
-            console.log(`Successfully sent the message to the webhook: HTTP ${response.status} - ${response.statusText}.`)
-          })
-          .catch((error) => {
-            // handle error
-            console.error(`Error while sending the message to the webhook: HTTP ${error.response.status} - ${error.response.statusText}`)
-          })
-      }, timeout)
-      firstMessage = false
+      try {
+        const response = await axios.post(url, { content: slicedContent })
+        console.log(`Successfully sent the message to the webhook: HTTP ${response.status} - ${response.statusText}.`)
+      } catch (error) {
+        if (error.response) {
+          console.error(`Error while sending the message to the webhook: HTTP ${error.response.status} - ${error.response.statusText}`)
+        } else {
+          console.error(`Error while sending the message to the webhook: ${error.message}`)
+        }
+      }
     }
     index += lastLineReturn
   }

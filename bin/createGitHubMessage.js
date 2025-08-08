@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict'
 
-const fs = require('fs')
 const { argv } = require('yargs')
   .scriptName('create-github-message')
   .usage('Usage: $0 -f <PathToChangelog> -m <message>')
@@ -16,37 +15,14 @@ const { argv } = require('yargs')
     type: 'string',
     default: './CHANGELOG.md'
   })
+const { extractRawChanges } = require('../lib/parser')
 
 function run () {
   const { file } = argv
 
-  const message = extractTitleAndChanges(file)
+  const message = extractRawChanges(file)
   // Print the title and the changes
   console.log(JSON.stringify(message))
-}
-
-function extractTitleAndChanges (filePath) {
-  const fileContent = fs.readFileSync(filePath, 'utf8').toString()
-
-  // Get the content between the first and the second releases
-  const regex = /## \[.+?## \[/s
-  let reducedContent = fileContent.match(regex)
-
-  // Try another regex if the first one doesn't work (for the first release)
-  if (!reducedContent) {
-    reducedContent = fileContent.match(/## .+/s)
-  }
-
-  if (!reducedContent) {
-    throw new Error('Could not find a release in the changelog.')
-  }
-
-  return reducedContent[0]
-    // Remove the last line
-    .replace(/\n.*$/, '')
-    // Reduce double line returns to a single one
-    .replace(/\n\n/g, '\n')
-    .trim()
 }
 
 run()
