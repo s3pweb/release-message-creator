@@ -21,9 +21,10 @@ It takes 3 optionals arguments:
 - `-f` The path to the changelog file.
 - `-m` A message template with up to 2 placeholders (`%s`) for the new version and the old version (in that order).
 - `-w` The full webhook url to send the message to. (e.g. `https://discord.com/api/webhooks/123456789/abcdefghijklmnopqrstuvwxyz`).
+- `-u` The user that created the release.
 
 ```shell
-create-release-message -f <changelog location> -m <message> -w <webhook discord>
+create-release-message -f <changelog location> -m <message> -w <webhook discord> -u <user>
 ```
 
 ```shell
